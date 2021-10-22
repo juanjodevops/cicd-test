@@ -1,0 +1,23 @@
+include:
+  - template: Terraform/Base.gitlab-ci.yml  # https://gitlab.com/gitlab-org/gitlab/blob/master/lib/gitlab/ci/templates/Terraform/Base.latest.gitlab-ci.yml
+
+before_script:
+  - rm -rf .terraform
+  - terraform --version
+  - terraform init
+
+stages:
+  - apply
+  - destroy
+
+apply: 
+  stage: apply
+  script: 
+      - terraform apply --auto-aprove
+
+destroy:
+  stage: destroy
+  dependencies: 
+      - apply
+  script: 
+      - terraform destroy --auto-aprove
